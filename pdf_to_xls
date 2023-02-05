@@ -25,6 +25,6 @@ with pdfplumber.open(path_pdf) as pdf:
         for i in table:
             date.append(i[0])
             value.append(i[3].replace(' RUR',''))
-            #print(i[0],i[3].replace(' RUR',''))
+            print(i[0],i[3].replace(' RUR',''))
 df = pd.DataFrame(list(zip(date, value)),columns =['Дата', 'Сумма'])
 df.to_excel('./teams.xlsx', index=False)
