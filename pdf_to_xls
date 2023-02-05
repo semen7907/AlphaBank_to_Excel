@@ -1,0 +1,30 @@
+import pdfplumber
+import pandas as pd
+
+path_pdf = r'C:\путь до файла.pdf'
+date = []
+value = []
+with pdfplumber.open(path_pdf) as pdf:
+    print('Страниц: ',len(pdf.pages))
+    for i in range(len(pdf.pages)):
+
+        page = pdf.pages[i]
+
+        table_settings = {
+            "vertical_strategy": "text",
+            "horizontal_strategy": "lines",
+            "keep_blank_chars": True,
+            "min_words_vertical": 10,
+            "intersection_tolerance": 5,
+            "intersection_x_tolerance": 5,
+            "intersection_y_tolerance": 5,
+        }
+
+
+        table = page.extract_table(table_settings)
+        for i in table:
+            date.append(i[0])
+            value.append(i[3].replace(' RUR',''))
+            #print(i[0],i[3].replace(' RUR',''))
+df = pd.DataFrame(list(zip(date, value)),columns =['Дата', 'Сумма'])
+df.to_excel('./teams.xlsx', index=False)
